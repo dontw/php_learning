@@ -35,12 +35,10 @@
         public function direct($uri,$RequestType){
 
             if(array_key_exists($uri, $this->routes[$RequestType])){
-
-                // return $this->routes[$RequestType][$uri];
-
                 
-
                 return $this->callAction(
+                //... -> splat operator
+                //function(...[value1,value2...]) -> function(value1,vlaue2,...)
                     ...explode('@',$this->routes[$RequestType][$uri])
                 );
 
@@ -52,16 +50,12 @@
             return view('404',[]);
         }
 
+        //呼叫某個controller中的某個action
         protected function callAction($controller,$action){
 
             $controller = "App\\Controllers\\{$controller}";
 
-           
-
             $controller = new $controller;
-
-        
-            
             
             if(!method_exists($controller, $action)){
                 throw new \Exception(

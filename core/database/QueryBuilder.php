@@ -20,9 +20,12 @@
             return $statement->fetch();
         }
 
+        //$parameters 為 關係陣列
         public function insertItem($table,$parameters){
             
             $sql = sprintf(
+                //INSERT INTO tableName (key, key2...) 
+                //VALUES(:key1, :key2...)
                 'INSERT INTO %s (%s) VALUES(%s)',
                 $table,
                 implode(', ', array_keys($parameters)),
@@ -30,16 +33,16 @@
             );
 
             
-            
             try{
                 $statement = $this->pdo->prepare($sql);
+
                 //bind value!
                 // $statement->bindParam(':name', 'Joe');
+
+                //$parameter = ["key1" => "value1", "key2" => "value2"]
                 $statement->execute($parameters);
             } catch(Exception $e){
-                var_dump($parameters);
-                var_dump($sql);
-                // die("OOOPS");
+
                 die($e->getMessage());
             }
             
